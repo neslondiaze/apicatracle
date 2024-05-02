@@ -1,0 +1,41 @@
+version: "3.8"
+
+services:
+  mongo:
+    image: mongo
+    container_name: catracleDB
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: "root"
+      MONGO_INITDB_ROOT_PASSWORD: "secret"
+      MONGO_INITDB_DATABASE: catracledb
+    volumes:
+      - ./data:/data/db
+      - ./data/log:/var/log/mongodb/
+    ports:
+      - "27017:27017"
+  mongo-express:
+    image: mongo-express
+    container_name: expresMongo
+    restart: always
+    environment:
+      ME_CONFIG_MONGODB_SERVER: "mongo"
+      ME_CONFIG_MONGODB_ADMINUSERNAME: "root"
+      ME_CONFIG_MONGODB_ADMINPASSWORD: "secret"
+      ME_CONFIG_MONGODB_PORT: "27017"
+      ME_CONFIG_BASICAUTH_USERNAME: "sa"
+      ME_CONFIG_BASICAUTH_PASSWORD: "sa"
+    links:
+      - mongo
+    ports:
+      - "8081:8081"
+  web:
+    container_name: catracleApp
+    restart: always
+    build: .
+    ports:
+      - 3000:3000
+    links:
+      - mongo
+    volumes:
+      - .:/usr/src/app
