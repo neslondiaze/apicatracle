@@ -2,16 +2,14 @@ version: "3.8"
 
 services:
   mongo:
-    image: mongo
+    image: mongo:latest
     container_name: catracleDB
     restart: always
     environment:
       MONGO_INITDB_ROOT_USERNAME: "root"
       MONGO_INITDB_ROOT_PASSWORD: "secret"
-      MONGO_INITDB_DATABASE: catracledb
     volumes:
       - ./data:/data/db
-      - ./data/log:/var/log/mongodb/
     ports:
       - "27017:27017"
   mongo-express:
@@ -19,7 +17,6 @@ services:
     container_name: expresMongo
     restart: always
     environment:
-      ME_CONFIG_MONGODB_SERVER: "mongo"
       ME_CONFIG_MONGODB_ADMINUSERNAME: "root"
       ME_CONFIG_MONGODB_ADMINPASSWORD: "secret"
       ME_CONFIG_MONGODB_PORT: "27017"
