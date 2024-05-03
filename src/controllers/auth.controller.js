@@ -1,4 +1,5 @@
 import { User } from "../models/User.js";
+import { generateRefreshToken, generateToken } from "../utils/tokenManager.js";
 
 export const register = async (req, res) => {
   const { email, password, username } = req.body;
@@ -12,8 +13,10 @@ export const register = async (req, res) => {
     await user.save();
 
     //Generar el token JWT
+    const { token, expiresIn } = generateToken(user._id);
+    generateRefreshToken(user._id, res);
 
-    return res.status(201).json({ ok: true });
+    return res.json({ token, expiresIn });
   } catch (error) {
     if (error.code === 11000) {
       // Alternattiva por defecto mongoose
