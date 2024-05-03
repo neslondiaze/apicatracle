@@ -1,22 +1,32 @@
 import { User } from "../models/User.js";
-import messages from "../helpers/messages.js";
-import serverResponse from "../helpers/responses.js";
 
 export const register = async (req, res) => {
   const { email, password, username } = req.body;
 
   try {
-    const user = new User({ email, password, username });
+    // Alternativa buscar por email
+    let user = await User.findOne({ email });
+    if (user) throw { code: 11000 };
+
+    user = new User({ email, password, username });
     await user.save();
 
-    //jwt roken
-    //return res.json({ ok: true });
-    serverResponse.sendSuccess(res, messages.SUCCESSFUL, user);
+    //Generar el token JWT
+
+    return res.status(201).json({ ok: true });
   } catch (error) {
-    console.log(error);
+    if (error.code === 11000) {
+      // Alternattiva por defecto mongoose
+      return res.status(400).json({ error: "Ya existe este usuario" });
+    }
+    return res.status(500).json({ error: "Error de servidor" });
   }
 };
 
 export const login = (req, res) => {
-  res.json({ ok: "login" });
+  const { email, password, username } = req.body;
+
+  try {
+    return res.json({ ok: "login" });
+  } catch (error) {}
 };
