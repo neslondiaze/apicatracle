@@ -1,4 +1,5 @@
 import { User } from "../models/User.js";
+import { Imagen } from "../models/imagenes.js";
 import { generateRefreshToken, generateToken } from "../utils/tokenManager.js";
 
 export const register = async (req, res) => {
@@ -48,6 +49,31 @@ export const login = async (req, res) => {
   }
 };
 
+//FIXME: guardar imagen PENDIETER
+/* export const upload = async (req, res) => {
+  try {
+    const imagen = req.body;
+    const imageBuffer = Buffer.from(imagen.data, "base64");
+    Imagen.create({
+      name: imagen.name,
+      type: imagen.type,
+      data: imageBuffer,
+    });
+    Imagen.save();
+    res
+      .status(201)
+      .json({ success: true, message: "Image uploaded successfully" });
+  } catch (error) {
+    res.status(409).json({ success: false, message: "Unable to upload image" });
+  }
+}; */
+
+//
 export const infoUser = async (req, res) => {
-  res.json({ user: "correo@correo.com" });
+  try {
+    const user = await User.findById(req.uid).lean();
+    return res.json({ email: user.email, uid: user.id });
+  } catch (error) {
+    return res.status(500).json({ error: "error de server" });
+  }
 };

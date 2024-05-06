@@ -30,7 +30,7 @@ export const generateRefreshToken = (uid, res) => {
   }
 };
 
-export const tokenVerificationError = {
+export const tokenVerificationErrors = {
   "invalid signature": "La firma deh JWT no es válida",
   "jwt expired": "JWT expirado",
   "invalid token": "Token no válido",
