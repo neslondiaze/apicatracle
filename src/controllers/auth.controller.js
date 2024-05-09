@@ -49,6 +49,30 @@ export const login = async (req, res) => {
   }
 };
 
+export const infoUser = async (req, res) => {
+  try {
+    const user = await User.findById(req.uid).lean();
+    return res.json({ email: user.email, uid: user.id });
+  } catch (error) {
+    return res.status(500).json({ error: "error de server" });
+  }
+};
+
+export const refreshToken = (req, res) => {
+  try {
+    const { token, expiresIn } = generateToken(req.uid);
+    return res.json({ token, expiresIn });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ error: "error de server" });
+  }
+};
+
+export const logout = (req, res) => {
+  res.clearCookie("refreshToken");
+  res.json({ ok: true });
+};
+
 //FIXME: guardar imagen PENDIETER
 /* export const upload = async (req, res) => {
   try {
@@ -67,13 +91,3 @@ export const login = async (req, res) => {
     res.status(409).json({ success: false, message: "Unable to upload image" });
   }
 }; */
-
-//
-export const infoUser = async (req, res) => {
-  try {
-    const user = await User.findById(req.uid).lean();
-    return res.json({ email: user.email, uid: user.id });
-  } catch (error) {
-    return res.status(500).json({ error: "error de server" });
-  }
-};

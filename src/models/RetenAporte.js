@@ -1,13 +1,16 @@
 import mongoose from "mongoose";
-const { Shema, model } = "mongoose";
+const { Schema, model } = "mongoose";
 
 const retenAporteSchema = new Schema(
   {
-    cedula: {
+    uid: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "cedula",
+      ref: "User",
+      requerid: true,
     },
-    retenAporte: [{ anio: Number, aporte: Number, retencion: Number }],
+    retenAporte: [
+      { anio: Number, mes: Nuber, aporte: Number, retencion: Number },
+    ],
   },
   { timestamps: true }
 );

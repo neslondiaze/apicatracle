@@ -1,5 +1,4 @@
 import jwt from "jsonwebtoken";
-
 export const generateToken = (uid) => {
   const expiresIn = 60 * 15;
 
@@ -13,9 +12,8 @@ export const generateToken = (uid) => {
 
 export const generateRefreshToken = (uid, res) => {
   const expiresIn = 60 * 60 * 24 * 30;
-
   try {
-    const refreshToken = jwt.sign({ uid }, process.env.JVT_REFRESH, {
+    const refreshToken = jwt.sign({ uid }, process.env.JWT_REFRESH, {
       expiresIn,
     });
 
@@ -25,15 +23,20 @@ export const generateRefreshToken = (uid, res) => {
       expires: new Date(Date.now() + expiresIn * 1000),
       sameSite: "none",
     });
+    // res.cookie("refreshToken", refreshToken, {
+    //     httpOnly: true,
+    //     secure: true,
+    //     expires: new Date(Date.now() + expiresIn * 1000),
+    // });
   } catch (error) {
     console.log(error);
   }
 };
 
 export const tokenVerificationErrors = {
-  "invalid signature": "La firma deh JWT no es válida",
+  "invalid signature": "La firma del JWT no es válida",
   "jwt expired": "JWT expirado",
   "invalid token": "Token no válido",
-  "No Bearer": "Utilizar formato Bearer",
+  "No Bearer": "Utiliza formato Bearer",
   "jwt malformed": "JWT formato no válido",
 };
