@@ -10,12 +10,12 @@ import { requireRefreshToken } from "../middlewares/requireRefreshToken.js";
 import { requireToken } from "../middlewares/requireToken.js";
 import {
   bodyLoginValidator,
-  bodyReginterValidator,
+  bodyRegisterValidator,
 } from "../middlewares/validatorManager.js";
 
 const router = express.Router();
 
-router.post("/register", bodyReginterValidator, register);
+router.post("/register", bodyRegisterValidator, register);
 
 router.post("/login", bodyLoginValidator, login);
 

@@ -39,10 +39,10 @@ export const login = async (req, res) => {
       return res.status(403).json({ error: "Contraseña incorrecta" });
 
     // Generar el token JWT
-    const { token, expiresIn } = generateToken(user.id);
+    const { token, expiresRe } = generateToken(user.id);
     generateRefreshToken(user.id, res);
 
-    return res.json({ token, expiresIn });
+    return res.json({ token, expiresRe });
   } catch (error) {
     console.log(error);
     return res.status(500).json({ error: "Error de servidor" });
